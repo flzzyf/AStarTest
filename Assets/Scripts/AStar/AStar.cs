@@ -17,17 +17,15 @@ public class AStar : MonoBehaviour
         var timer = new System.Diagnostics.Stopwatch();
         timer.Start();
 
-        HashSet<Node> openList = new HashSet<Node>();
+        Heap<Node> openList = new Heap<Node>(grid.maxSize);
         HashSet<Node> closeList = new HashSet<Node>();
 
         openList.Add(startNode);
 
         while(openList.Count > 0)
         {
-            //取出消耗最低的节点
-            Node node = GetLowerestCoseNode(openList);
-
-            openList.Remove(node);
+			//取出消耗最低的节点
+			Node node = openList.RemoveFirst();
             closeList.Add(node);
 
             //如果就是终点
@@ -44,6 +42,7 @@ public class AStar : MonoBehaviour
 
                 path.Reverse();
 
+				timer.Stop();
                 Debug.Log(timer.ElapsedMilliseconds.ToString() + "ms");
 
                 return path;
@@ -85,21 +84,6 @@ public class AStar : MonoBehaviour
         }
 
         return 1.414f * distanceX + (distanceY - distanceX);
-    }
-
-    //获取消耗最低的节点
-    Node GetLowerestCoseNode(HashSet<Node> nodeList)
-    {
-        Node lowerestFNode = null;
-
-        foreach (var item in nodeList)
-        {
-            if (lowerestFNode == null || item.f < lowerestFNode.f || (item.f == lowerestFNode.f && item.h < lowerestFNode.h))
-            {
-                lowerestFNode = item;
-            }
-        }
-        return lowerestFNode;
     }
 
     //获取周围一圈的节点

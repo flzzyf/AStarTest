@@ -14,9 +14,26 @@ public class Grid : MonoBehaviour
 
     public List<Node> path;
 
+	public bool onlyDisplayPath;
+
+	public int maxSize { get { return mapSize.x * mapSize.y; } }
+
     private void OnDrawGizmos()
     {
         Vector2 startingPos = new Vector2(-mapSize.x / 2, -mapSize.y / 2) * spacing;
+
+		if(onlyDisplayPath) {
+			if (path != null) {
+				foreach (var item in path) {
+					Vector2 pos = new Vector2(item.x, item.y) * spacing + startingPos;
+					Gizmos.color = Color.blue;
+					Gizmos.DrawWireCube(pos, Vector3.one);
+				}
+			}
+
+			return;
+		}
+
         for (int y = 0; y < mapSize.y; y++)
         {
             for (int x = 0; x < mapSize.x; x++)
